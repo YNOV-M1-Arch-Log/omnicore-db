@@ -41,6 +41,7 @@ model CountryProduct {
   id          String      @id @default(uuid())
   productId   String      @map("product_id")
   countryId   String      @map("country_id")
+  sku         String?     @db.VarChar(100)
   price       Decimal     @db.Decimal(10, 2)
   currency    String?     @db.VarChar(10)
   quantity    Int         @default(0)
