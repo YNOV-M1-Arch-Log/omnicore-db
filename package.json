@@ -1,0 +1,23 @@
+{
+  "name": "@omnicore/db",
+  "version": "1.0.0",
+  "description": "Shared Prisma database client, schema, migrations and seed for all Omnicore services",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "prisma:generate":       "prisma generate",
+    "prisma:migrate":        "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio":         "prisma studio",
+    "seed":                  "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client":     "^7.2.0",
+    "dotenv":             "^17.2.3",
+    "pg":                 "^8.17.1"
+  },
+  "devDependencies": {
+    "prisma": "^7.2.0"
+  }
+}
