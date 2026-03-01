@@ -220,6 +220,30 @@ model Order {
   @@map("orders")
 }
 
+model Payment {
+  id                    String    @id @default(uuid())
+  orderId               String    @unique @map("order_id")
+  stripePaymentIntentId String    @unique @map("stripe_payment_intent_id") @db.VarChar(255)
+  stripeClientSecret    String    @map("stripe_client_secret") @db.Text
+  amount                Decimal   @db.Decimal(10, 2)
+  currency              String    @db.VarChar(10)
+  status                String    @default("pending") @db.VarChar(50)
+  // pending | processing | succeeded | failed | cancelled | refunded
+  failureReason         String?   @map("failure_reason") @db.Text
+  refundId              String?   @map("refund_id") @db.VarChar(255)
+  refundReason          String?   @map("refund_reason") @db.Text
+  paidAt                DateTime? @map("paid_at")
+  failedAt              DateTime? @map("failed_at")
+  refundedAt            DateTime? @map("refunded_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@index([orderId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+  @@map("payments")
+}
+
 model OrderItem {
   id               String         @id @default(uuid())
   orderId          String         @map("order_id")
