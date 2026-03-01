@@ -191,15 +191,28 @@ model UserAuditLog {
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  userId      String      @map("user_id")
-  countryId   String      @map("country_id")
-  status      String      @default("pending") @db.VarChar(50)
-  totalAmount Decimal     @map("total_amount") @db.Decimal(10, 2)
-  currency    String      @db.VarChar(10)
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  items       OrderItem[]
+  id                 String      @id @default(uuid())
+  userId             String      @map("user_id")
+  countryId          String      @map("country_id")
+  status             String      @default("pending") @db.VarChar(50)
+  totalAmount        Decimal     @map("total_amount") @db.Decimal(10, 2)
+  currency           String      @db.VarChar(10)
+  // Order-taking fields
+  shippingAddress    Json?       @map("shipping_address")
+  notes              String?     @db.Text
+  // Fulfillment fields (set during processing)
+  trackingNumber     String?     @map("tracking_number") @db.VarChar(100)
+  shippingProvider   String?     @map("shipping_provider") @db.VarChar(100)
+  estimatedDelivery  DateTime?   @map("estimated_delivery")
+  cancellationReason String?     @map("cancellation_reason") @db.Text
+  // Lifecycle timestamps
+  confirmedAt        DateTime?   @map("confirmed_at")
+  shippedAt          DateTime?   @map("shipped_at")
+  deliveredAt        DateTime?   @map("delivered_at")
+  cancelledAt        DateTime?   @map("cancelled_at")
+  createdAt          DateTime    @default(now()) @map("created_at")
+  updatedAt          DateTime    @updatedAt @map("updated_at")
+  items              OrderItem[]
 
   @@index([userId])
   @@index([countryId])
